@@ -17,6 +17,7 @@ Your personal voice assistant, running on your own computer and powered by Claud
 2. Double-click the launcher:
    - **Windows:** `Start JARVIS.bat`
    - **Mac:** `Start JARVIS.command` (the first time, right-click it and choose **Open**)
+   - **Visual Studio Code:** open this folder (**File → Open Folder**) and press **F5**, or choose **Terminal → Run Task → Start JARVIS**
    - Or from a terminal in this folder: `npm start`
 3. The first time, it installs what it needs and asks you to paste your API key. The key is saved only on this computer, in a file named `.dev.vars`.
 4. JARVIS opens in its own window. Allow microphone access when asked.

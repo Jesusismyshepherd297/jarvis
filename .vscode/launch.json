@@ -1,0 +1,12 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Start JARVIS",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/start.mjs",
+      "console": "integratedTerminal"
+    }
+  ]
+}
