@@ -1,37 +1,39 @@
 # J.A.R.V.I.S.
 
-A voice-enabled AI assistant powered by Claude. Talk to it with your mic or type, and it answers out loud.
+Your personal voice assistant, running on your own computer and powered by Claude. Talk to it or type, and it answers out loud.
 
-- **Voice in:** the browser's Web Speech API (Chrome, Edge, Safari). On other browsers the mic button is hidden and typing still works.
-- **Voice out:** the browser's built-in speech synthesis. Toggle it with "Voice on/off".
-- **Brains:** Claude, streamed from `/api/jarvis` (`src/routes/api/jarvis.ts`). JARVIS's personality lives in `src/lib/jarvis.ts`; edit the system prompt there to change how it behaves.
+## What you need
 
-Built with TanStack Start, Tailwind CSS, and Cloudflare Workers.
+1. **Node.js** (version 20 or newer), from https://nodejs.org. Choose the "LTS" download.
+2. **Google Chrome or Microsoft Edge.** JARVIS opens in its own window using one of these, and the microphone needs them.
+3. **An Anthropic API key**, which gives JARVIS its brain:
+   - Go to https://console.anthropic.com and sign in.
+   - Under **Billing**, add a payment method or buy a few dollars of credits. You pay only for what you use; a typical message costs well under one cent.
+   - Under **API Keys**, click **Create Key** and copy it (it starts with `sk-ant-`).
 
-## Run it locally
+## Start JARVIS
 
-1. Get an API key at https://console.anthropic.com (API Keys).
-2. Create a file named `.dev.vars` in the project root:
-   ```
-   ANTHROPIC_API_KEY=sk-ant-...
-   ```
-3. Install and start:
-   ```bash
-   bun install
-   npx vite dev --port 3000
-   ```
-4. Open http://localhost:3000
+1. On GitHub, click **Code → Download ZIP**, then unzip it anywhere (or `git clone` the repo).
+2. Double-click the launcher:
+   - **Windows:** `Start JARVIS.bat`
+   - **Mac:** `Start JARVIS.command` (the first time, right-click it and choose **Open**)
+   - Or from a terminal in this folder: `npm start`
+3. The first time, it installs what it needs and asks you to paste your API key. The key is saved only on this computer, in a file named `.dev.vars`.
+4. JARVIS opens in its own window. Allow microphone access when asked.
 
-## Deploy to Cloudflare Workers
+Keep the black launcher window open while you use JARVIS; closing it (or pressing Ctrl+C) shuts JARVIS down. Everything runs on `localhost`, so nobody else on the internet can reach it.
 
-```bash
-npx wrangler login
-npx wrangler secret put ANTHROPIC_API_KEY
-bun run deploy
-```
+To change your API key later, delete `.dev.vars` and start JARVIS again.
 
-Wrangler prints your live URL when the deploy finishes.
+## Using it
 
-## Costs and limits
+- **Talk:** click the mic button and speak; JARVIS sends your message when you stop talking.
+- **Type:** use the text box and press Enter.
+- **Voice on/off:** the button in the top-right toggles whether JARVIS reads replies aloud.
+- **Stop:** cuts off a reply or the speech.
 
-Each message is billed to your Anthropic account. The server only accepts the last 20 turns of a conversation, 4,000 characters each, to keep costs bounded. The endpoint is public once deployed, so anyone with the URL can use your key; add authentication (for example Cloudflare Access) before sharing it widely.
+## Customize
+
+- JARVIS's personality lives in `src/lib/jarvis.ts`. Edit the text in `JARVIS_SYSTEM_PROMPT` to change how it talks or what it focuses on.
+- The window and design are in `src/routes/index.tsx`.
+- The server that talks to Claude is `src/routes/api/jarvis.ts`.

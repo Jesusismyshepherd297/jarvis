@@ -2,15 +2,15 @@ import Anthropic from "@anthropic-ai/sdk";
 import { createFileRoute } from "@tanstack/react-router";
 import { JARVIS_SYSTEM_PROMPT, sanitizeTurns } from "#/lib/jarvis";
 
-// Streams JARVIS's reply as plain text. Requires the ANTHROPIC_API_KEY secret
-// (`.dev.vars` locally, `wrangler secret put ANTHROPIC_API_KEY` in production).
+// Streams JARVIS's reply as plain text. Reads ANTHROPIC_API_KEY from `.dev.vars`,
+// which the launcher (`npm start`) creates on first run.
 export const Route = createFileRoute("/api/jarvis")({
   server: {
     handlers: {
       POST: async ({ request }) => {
         const apiKey = process.env.ANTHROPIC_API_KEY;
         if (!apiKey) {
-          return new Response("JARVIS is offline: ANTHROPIC_API_KEY is not configured.", {
+          return new Response("JARVIS is offline: no API key found. Start JARVIS with the launcher (npm start) to add one.", {
             status: 503,
           });
         }
@@ -58,9 +58,11 @@ export const Route = createFileRoute("/api/jarvis")({
             } catch (error) {
               console.error("JARVIS stream failed", error);
               const message =
-                error instanceof Anthropic.RateLimitError
-                  ? "I'm getting a lot of requests right now. Try again in a moment."
-                  : "Something went wrong on my end. Please try again.";
+                error instanceof Anthropic.AuthenticationError
+                  ? "My API key was rejected. Delete the .dev.vars file and restart me to enter a new one."
+                  : error instanceof Anthropic.RateLimitError
+                    ? "I'm getting a lot of requests right now. Try again in a moment."
+                    : "Something went wrong on my end. Please try again.";
               controller.enqueue(encoder.encode(`\n\n${message}`));
             } finally {
               controller.close();

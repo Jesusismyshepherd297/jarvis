@@ -6,10 +6,9 @@
     "#/*": "./src/*"
   },
   "scripts": {
-    "dev": "vite dev --port 3000",
+    "start": "node scripts/start.mjs",
+    "dev": "vite dev --port 3939",
     "build": "vite build",
-    "preview": "vite preview",
-    "deploy": "vite build && wrangler deploy",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
