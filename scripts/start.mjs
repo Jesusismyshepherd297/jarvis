@@ -35,6 +35,12 @@ async function ensureApiKey() {
   }
   log("JARVIS needs your Anthropic API key (create one at https://console.anthropic.com).");
   log("It is saved only on this computer, in the .dev.vars file.");
+  if (!process.stdin.isTTY) {
+    // e.g. VS Code's Debug Console, which can't take typed input.
+    log("This window can't take typed input. Open a terminal (in VS Code: Terminal → New Terminal),");
+    log("type  npm start  and press Enter, then paste your key there.");
+    process.exit(1);
+  }
   const rl = createInterface({ input: process.stdin, output: process.stdout });
   let key = "";
   while (!key.startsWith("sk-ant-")) {

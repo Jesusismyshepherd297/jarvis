@@ -6,7 +6,9 @@
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/scripts/start.mjs",
-      "console": "integratedTerminal"
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
     }
   ]
 }
